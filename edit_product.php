@@ -5,9 +5,11 @@
    page_require_level(2);
 ?>
 <?php
-$product = find_by_id('products',(int)$_GET['id']);
+$product = find_product_by_id((int)$_GET['id']);
 $all_categories = find_all('categories');
 $all_photo = find_all('media');
+$all_states = find_all('state');
+$all_locations = find_all('location');
 if(!$product){
   $session->msg("d","Missing product id.");
   redirect('product.php');
@@ -34,8 +36,8 @@ if(!$product){
        }
        $query   = "UPDATE products SET";
        $query  .=" name ='{$p_name}', quantity ='{$p_qty}',";
-       $query  .=" buy_price ='{$p_buy}', saleing_price ='{$p_sale}', categorie_id ='{$p_cat}',media_id='{$media_id}',";
-       $query  .=" state='{$p_state}',code='{$p_code}', location='{$p_location}'";
+       $query  .=" buy_price ='{$p_buy}', sale_price ='{$p_sale}', categorie_id ='{$p_cat}',media_id='{$media_id}',";
+       $query  .=" state_id='{$p_state}',code='{$p_code}', location_id='{$p_location}'";
        $query  .=" WHERE id ='{$product['id']}'";
        $result = $db->query($query);
                if($result && $db->affected_rows() === 1){
@@ -83,12 +85,12 @@ if(!$product){
                 <div class="row">
                   <div class="col-md-6">
                     <select class="form-control" name="product-categorie">
-                    <option value="">Selecciona una categoría</option>
-                   <?php  foreach ($all_categories as $cat): ?>
-                     <option value="<?php echo (int)$cat['id']; ?>" <?php if($product['categorie_id'] === $cat['id']): echo "selected"; endif; ?> >
-                       <?php echo remove_junk($cat['name']); ?></option>
-                   <?php endforeach; ?>
-                 </select>
+                      <option value="">Selecciona una categoría</option>
+                       <?php  foreach ($all_categories as $cat): ?>
+                         <option value="<?php echo (int)$cat['id']; ?>" <?php if($product['categorie'] === $cat['name']): echo "selected"; endif; ?> >
+                           <?php echo remove_junk($cat['name']); ?></option>
+                       <?php endforeach; ?>
+                    </select>
                   </div>
                   <div class="col-md-6">
                     <select class="form-control" name="product-photo">
@@ -111,16 +113,17 @@ if(!$product){
                    <i class="glyphicon glyphicon glyphicon-qrcode"></i>
                   </span>
                   <input type="text" class="form-control" name="code" value="<?php echo remove_junk($product['code']); ?>">
-                  <input type="hidden" name="saleing-price" value="Si">
                </div>
               </div>
               <div class="col-md-6">
                 <label for="qty"> Estado</label>
-                <div class="input-group">
-                  <span class="input-group-addon">
-                   <i class="glyphicon glyphicon glyphicon-flag"></i>
-                  </span>
-                  <input type="text" class="form-control" name="state" value="<?php echo remove_junk($product['state']); ?>">
+                <select class="form-control" name="state">
+                  <option value="">Estado</option>
+                   <?php  foreach ($all_states as $sta): ?>
+                     <option value="<?php echo (int)$sta['id']; ?>" <?php if($product['state'] === $sta['state_name']): echo "selected"; endif; ?> >
+                       <?php echo remove_junk($sta['state_name']); ?></option>
+                   <?php endforeach; ?>
+                </select>
                </div>
               </div>
             </div>
@@ -141,18 +144,7 @@ if(!$product){
                    </div>
                   </div>
                  </div>
-                 <div class="col-md-4">
-                  <div class="form-group">
-                    <label for="qty">Precio de compra</label>
-                    <div class="input-group">
-                      <span class="input-group-addon">
-                        <i class="glyphicon glyphicon-usd"></i>
-                      </span>
-                      <input type="number" step="0.01" class="form-control" name="buying-price" value="<?php echo remove_junk($product['buy_price']);?>">
 
-                   </div>
-                  </div>
-                 </div>
                   <div class="col-md-4">
                    <div class="form-group">
                      <label for="qty">Ubicación del producto</label>
@@ -160,9 +152,16 @@ if(!$product){
                        <span class="input-group-addon">
                          <i class="glyphicon glyphicon-map-marker"></i>
                        </span>
-                       <input type="text" class="form-control" name="location" value="<?php echo remove_junk($product['location']);?>">
-                       <input type="hidden" name="saling-price" value="Si">
-
+                       <select class="form-control" name="location">
+                         <option value=""></option>
+                          <?php  foreach ($all_locations as $loc): ?>
+                            <option value="<?php echo (int)$loc['id']; ?>" <?php if($product['location'] === $loc['location_name']): echo "selected"; endif; ?> >
+                              <?php echo remove_junk($loc['location_name']); ?></option>
+                          <?php endforeach; ?>
+                       </select>
+                       <input type="hidden" name="saling-price" value="0">
+                       <input type="hidden" name="saleing-price" value="0">
+                       <input type="hidden" name="buying-price" value="0">
                     </div>
                    </div>
                   </div>

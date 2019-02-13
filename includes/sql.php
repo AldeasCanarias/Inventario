@@ -266,6 +266,34 @@ function tableExists($table){
       return $result;
     }
 
+
+    /*--------------------------------------------------------------*/
+    /* Busca todos los datos de producto por ID
+    /*--------------------------------------------------------------*/
+
+     function find_product_by_id($id){
+       global $db;
+       $p_id = remove_junk($db->escape($id));
+
+        $sql = "SELECT p.id,p.name,p.quantity,p.buy_price,p.sale_price,p.media_id,p.date,p.code,c.name AS categorie, l.location_name AS location, s.state_name AS state";
+       $sql  .=" FROM products p";
+       $sql  .=" LEFT JOIN categories c ON c.id = p.categorie_id";
+       $sql  .=" LEFT JOIN location l ON l.id = p.location_id";
+       $sql  .=" LEFT JOIN state s ON s.id = p.state_id";
+       $sql  .=" WHERE p.id = '$p_id'";
+       $sql  .=" ORDER BY p.id ASC";
+
+       $result = $db->query($sql);
+
+       if($result = $db->fetch_assoc($result))
+         return $result;
+       else
+         return null;
+
+       //return find_by_sql($sql);
+     }
+
+
   /*--------------------------------------------------------------*/
   /* Function for Finding all product name
   /* Request coming from ajax.php for auto suggest
