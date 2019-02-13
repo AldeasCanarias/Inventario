@@ -33,12 +33,12 @@
          </div>
 
          <div class="pull-left">
-           <form class="search" action="product.php" method="post">
+           <form class="search form-inline" action="product.php" method="post">
 
-             <i class="glyphicon glyphicon glyphicon-search"></i> <input type="text" name="buscar" value="" placeholder="Buscar">
+             <i class="glyphicon glyphicon glyphicon-search"></i> <input type="text" name="buscar" value="" placeholder="Nombre o Etiqueta">
 
              <select class="form-control" name="category">
-               <option value=""></option>
+               <option value="">Todas las Categorías</option>
                <?php  foreach ($all_categories as $cat): ?>
                  <option value="<?php echo $cat['name'] ?>">
                    <?php echo $cat['name'] ?></option>
