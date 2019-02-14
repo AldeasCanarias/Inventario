@@ -232,26 +232,36 @@ function tableExists($table){
    /* on name or matches with the code. Also filters by Category.
    /*--------------------------------------------------------------*/
 
-    function find_product_containing_string($product_name, $category){
+    function find_product($product_name, $category, $location){
       global $db;
       $p_name = remove_junk($db->escape($product_name));
       $c_name = remove_junk($db->escape($category));
+      $l_name = remove_junk($db->escape($location));
       $sql = "SELECT p.id,p.name,p.quantity,p.buy_price,p.sale_price,p.media_id,p.date,p.code,c.name AS categorie, l.location_name AS location, s.state_name AS state";
       $sql  .=" FROM products p";
       $sql  .=" LEFT JOIN categories c ON c.id = p.categorie_id";
       $sql  .=" LEFT JOIN location l ON l.id = p.location_id";
       $sql  .=" LEFT JOIN state s ON s.id = p.state_id";
 
-      if (!($p_name == '' && $c_name == '')) {
+      if (!($p_name == '' && $c_name == '' && $l_name == '')) {
         $sql  .=" WHERE";
+
         if ($p_name != '') {
           $sql  .=" p.name LIKE '%$p_name%' OR p.code = '$p_name' OR p.code LIKE '%$p_name%'";
         }
-        if ($category != '') {
+
+        if ($c_name != '') {
           if ($p_name != '') {
             $sql .=" AND";
           }
           $sql .=" c.name = '$c_name'";
+        }
+
+        if($l_name != ''){
+          if ($p_name != '' || $c_name != '') {
+            $sql .=" AND";
+          }
+          $sql .=" l.location_name = '$l_name'";
         }
       }
 

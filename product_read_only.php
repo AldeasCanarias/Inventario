@@ -2,7 +2,7 @@
   $page_title = 'Lista de productos';
   require_once('includes/load.php');
   // Checkin What level user has permission to view this page
-   page_require_level(2);
+   page_require_level(3);
   $products = join_product_table();
 ?>
 <?php include_once('layouts/header.php'); ?>
@@ -33,12 +33,9 @@
     <div class="col-md-12">
       <div class="panel panel-default">
         <div class="panel-heading clearfix">
-         <div class="pull-right">
-           <a href="add_product.php" class="btn btn-success">Agregar producto</a>
-         </div>
 
          <div class="pull-left">
-           <form class="search form-inline" action="product.php" method="post">
+           <form class="search form-inline" action="product_read_only.php" method="post">
 
              <i class="glyphicon glyphicon glyphicon-search"></i> <input type="text" name="buscar" value="<?php echo $search_name ?>" placeholder="Nombre o Etiqueta">
 
@@ -77,7 +74,6 @@
                 <th class="text-center" style="width: 10%;">Estado </th>
                 <th class="text-center" style="width: 10%;">Ubicación </th>
                 <th class="text-center" style="width: 10%;"> Agregado </th>
-                <th class="text-center" style="width: 100px;"> Acciones </th>
               </tr>
             </thead>
             <tbody>
@@ -104,16 +100,6 @@
                 <td class="text-center"> <?php echo remove_junk($product['state']); ?></td>
                 <td class="text-center"> <?php echo remove_junk($product['location']); ?></td>
                 <td class="text-center"> <?php echo read_date($product['date']); ?></td>
-                <td class="text-center">
-                  <div class="btn-group">
-                    <a href="edit_product.php?id=<?php echo (int)$product['id'];?>" class="btn btn-info btn-xs"  title="Editar" data-toggle="tooltip">
-                      <span class="glyphicon glyphicon-edit"></span>
-                    </a>
-                     <a href="delete_product.php?id=<?php echo (int)$product['id'];?>" class="btn btn-danger btn-xs"  title="Eliminar" data-toggle="tooltip">
-                      <span class="glyphicon glyphicon-trash"></span>
-                    </a>
-                  </div>
-                </td>
 
               </tr>
              <?php endforeach; ?>
