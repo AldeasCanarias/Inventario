@@ -92,7 +92,7 @@ if(!$product){
                        <?php endforeach; ?>
                     </select>
                   </div>
-                  <div class="col-md-6">
+                  <!--<div class="col-md-6">
                     <select class="form-control" name="product-photo">
                       <option value=""> Sin imagen</option>
                       <?php  foreach ($all_photo as $photo): ?>
@@ -100,7 +100,7 @@ if(!$product){
                           <?php echo $photo['file_name'] ?></option>
                       <?php endforeach; ?>
                     </select>
-                  </div>
+                  </div>-->
                 </div>
               </div>
 <!-- Creamos adaptacion en particular añadir codigo y estado -->
