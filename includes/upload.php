@@ -48,7 +48,7 @@ class  Media {
       return false;
     else:
       $this->imageInfo = getimagesize($file['tmp_name']);
-      $this->fileName  = basename($file['name']);
+      $this->fileName  = (string)time() .'-'. basename($file['name']);
       $this->fileType  = $this->imageInfo['mime'];
       $this->fileTempPath = $file['tmp_name'];
      return true;
@@ -81,7 +81,7 @@ class  Media {
          global $db;
          $sql = "SELECT MAX(id) max FROM media";
          $result = $db->query($sql);
-         $ins_id = $result->fetch_assoc(); //ESTO DA 1 - PROBLEMA CON EL ASSOC<--------------------:ERROR:
+         $ins_id = $result->fetch_assoc();
          return $ins_id['max'];
    }
 
