@@ -95,7 +95,6 @@
                 </td>
                 <td class="text-center"> <?php echo remove_junk($product['code']); ?></td>
                 <td>
-
                    <?php echo remove_junk($product['name']); ?>
                  </td>
                 <td class="text-center"> <?php echo remove_junk($product['categorie']); ?></td>

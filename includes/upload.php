@@ -73,6 +73,18 @@ class  Media {
      return true;
     endif;
  }
+
+ /*--------------------------------------------------------------*/
+ /* Function to get the last media id*/
+ /*--------------------------------------------------------------*/
+   public function get_last_media_id(){
+         global $db;
+         $sql = "SELECT MAX(id) max FROM media";
+         $result = $db->query($sql);
+         $ins_id = $result->fetch_assoc(); //ESTO DA 1 - PROBLEMA CON EL ASSOC<--------------------:ERROR:
+         return $ins_id['max'];
+   }
+
  /*--------------------------------------------------------------*/
  /* Function for Process media file
  /*--------------------------------------------------------------*/
@@ -90,24 +102,27 @@ class  Media {
         return false;
       }
 
+    /*-----------------------CAMBIAR CON FICHEROS EXISTENTES----------------------*/
     if(file_exists($this->productPath."/".$this->fileName)){
       $this->errors[] = "El archivo {$this->fileName} Realmente existe.";
       return false;
     }
+    /*-----------------------CAMBIAR FICHEROS EXISTENTES---------------------*/
 
-    if(move_uploaded_file($this->fileTempPath,$this->productPath.'/'.$this->fileName))
-    {
-
-      if($this->insert_media()){
+    if(move_uploaded_file($this->fileTempPath,$this->productPath.'/'.$this->fileName)) {
+      $insert_output = $this->insert_media();
+      if($insert_output!= false){
         unset($this->fileTempPath);
-        return true;
+        $last_id = $this->get_last_media_id();
+        return $last_id;
       }
-
-    } else {
-
-      $this->errors[] = "Error en la carga del archivo, posiblemente debido a permisos incorrectos en la carpeta de carga.";
-      return false;
-    }
+      else{
+        return false;
+      }
+      } else {
+        $this->errors[] = "Error en la carga del archivo, posiblemente debido a permisos incorrectos en la carpeta de carga.";
+        return false;
+      }
 
   }
   /*--------------------------------------------------------------*/
@@ -179,7 +194,7 @@ class  Media {
 /* Function for insert media image
 /*--------------------------------------------------------------*/
   private function insert_media(){
-
+     /*Cambiar a nombre unico*/
          global $db;
          $sql  = "INSERT INTO media ( file_name,file_type )";
          $sql .=" VALUES ";
@@ -188,8 +203,9 @@ class  Media {
                   '{$db->escape($this->fileType)}'
                   )";
        return ($db->query($sql) ? true : false);
-
   }
+
+
 /*--------------------------------------------------------------*/
 /* Function for Delete media by id
 /*--------------------------------------------------------------*/

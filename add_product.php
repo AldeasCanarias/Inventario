@@ -21,11 +21,21 @@
      $p_state  = remove_junk($db->escape($_POST['state']));
      $p_code  = remove_junk($db->escape($_POST['code']));
      $p_location  = remove_junk($db->escape($_POST['location']));
-     if (is_null($_POST['product-photo']) || $_POST['product-photo'] === "") {
-       $media_id = '0';
-     } else {
-       $media_id = remove_junk($db->escape($_POST['product-photo']));
-     }
+     //if (is_null($_POST['product-photo']) || $_POST['product-photo'] === "") {
+
+      $photo = new Media();
+      $error_subida = $photo->upload($_FILES['file_upload']); //<- FALLA AQUI
+      $img_id = $photo->process_media();
+      if($img_id != false){
+        $session->msg('s','Imagen subida al servidor.');
+        $media_id = $img_id;
+      } else{
+        $session->msg('d',join($photo->errors));
+        $media_id = $error_subida;
+        $img_id = "Error de insercion";
+      }
+
+
      if ($p_buy ==''){
        $p_buy = 0;
      }
@@ -69,7 +79,7 @@
         </div>
         <div class="panel-body">
          <div class="col-md-12">
-          <form method="post" action="add_product.php" class="clearfix">
+          <form method="post" action="add_product.php" class="clearfix" enctype="multipart/form-data">
               <div class="form-group">
                 <div class="input-group">
                   <span class="input-group-addon">
@@ -89,14 +99,11 @@
                     <?php endforeach; ?>
                     </select>
                   </div>
-                  <div class="col-md-6">
-                    <select class="form-control" name="product-photo">
-                      <option value="">Selecciona una imagen</option>
-                    <?php  foreach ($all_photo as $photo): ?>
-                      <option value="<?php echo (int)$photo['id'] ?>">
-                        <?php echo $photo['file_name'] ?></option>
-                    <?php endforeach; ?>
-                    </select>
+                  <div class="col-md-4">
+                    <span>Imagen</span>
+                    <span class="input-group-btn">
+                      <input type="file" name="file_upload" class="form-control"/>
+                   </span>
                   </div>
                 </div>
               </div>
