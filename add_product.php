@@ -24,7 +24,7 @@
      //if (is_null($_POST['product-photo']) || $_POST['product-photo'] === "") {
 
       $photo = new Media();
-      $error_subida = $photo->upload($_FILES['file_upload']); //<- FALLA AQUI
+      $error_subida = $photo->upload($_FILES['file_upload']);
       $img_id = $photo->process_media();
       if($img_id != false){
         $session->msg('s','Imagen subida al servidor.');

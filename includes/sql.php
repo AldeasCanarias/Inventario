@@ -223,7 +223,7 @@ function tableExists($table){
     $sql  .=" LEFT JOIN categories c ON c.id = p.categorie_id";
     $sql  .=" LEFT JOIN location l ON l.id = p.location_id";
     $sql  .=" LEFT JOIN state s ON s.id = p.state_id";
-    $sql  .=" ORDER BY p.id ASC";
+    $sql  .=" ORDER BY p.id DESC";
     return find_by_sql($sql);
 
    }
@@ -433,6 +433,12 @@ function  monthlySales($year){
   $sql .= " WHERE DATE_FORMAT(s.date, '%Y' ) = '{$year}'";
   $sql .= " GROUP BY DATE_FORMAT( s.date,  '%c' ),s.product_id";
   $sql .= " ORDER BY date_format(s.date, '%c' ) ASC";
+  return find_by_sql($sql);
+}
+
+function find_media_by_id($id){
+  global $db;
+  $sql = "SELECT * FROM media WHERE id=" . $id;
   return find_by_sql($sql);
 }
 

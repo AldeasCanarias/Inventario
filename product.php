@@ -68,7 +68,7 @@
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th class="text-center" style="width: 50px;">#</th>
+                <!--<th class="text-center" style="width: 50px;">#</th>-->
                 <th> Imagen</th>
                 <th class="text-center" style="width: 10%;"> Código </th>
                 <th> Descripción </th>
@@ -85,12 +85,17 @@
               // print_r ($products);
               foreach ($products as $product):?>
               <tr>
-                <td class="text-center"><?php echo count_id();?></td>
-                <td>
+                <!--<td class="text-center"><?php //echo count_id();?></td>-->
+                <td class= "text-center">
                   <?php if($product['media_id'] === '0'): ?>
                     <img class="img-avatar img-circle" src="uploads/products/no_image.jpg" alt="">
                   <?php else: ?>
-                  <img class="img-avatar img-circle" src="uploads/products/<?php echo $product['image']; ?>" alt="">
+                    <?php
+                     $image = find_media_by_id($product['media_id']);
+                     ?>
+                  <a href="uploads/products/<?php echo remove_junk($image[0]['file_name']); ?>">
+                    <img class="img-avatar img-circle" src="uploads/products/<?php echo remove_junk($image[0]['file_name']); ?>" alt="">
+                  </a>
                 <?php endif; ?>
                 </td>
                 <td class="text-center"> <?php echo remove_junk($product['code']); ?></td>
@@ -105,10 +110,10 @@
                 <td class="text-center"> <?php echo read_date($product['date']); ?></td>
                 <td class="text-center">
                   <div class="btn-group">
-                    <a href="edit_product.php?id=<?php echo (int)$product['id'];?>" class="btn btn-info btn-xs"  title="Editar" data-toggle="tooltip">
+                    <a href="edit_product.php?id=<?php echo (int)$product['id'];?>" class="btn btn-info btn-lg"  title="Editar" data-toggle="tooltip">
                       <span class="glyphicon glyphicon-edit"></span>
                     </a>
-                     <a href="delete_product.php?id=<?php echo (int)$product['id'];?>" class="btn btn-danger btn-xs"  title="Eliminar" data-toggle="tooltip">
+                     <a href="delete_product.php?id=<?php echo (int)$product['id'];?>" class="btn btn-danger btn-lg"  title="Eliminar" data-toggle="tooltip">
                       <span class="glyphicon glyphicon-trash"></span>
                     </a>
                   </div>
