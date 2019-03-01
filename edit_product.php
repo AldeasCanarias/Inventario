@@ -29,11 +29,12 @@ if(!$product){
      $p_state  = remove_junk($db->escape($_POST['state']));
      $p_code  = remove_junk($db->escape($_POST['code']));
      $p_location  = remove_junk($db->escape($_POST['location']));
-       if (is_null($_POST['product-photo']) || $_POST['product-photo'] === "") {
+     $media_id = remove_junk($db->escape($_POST['product-photo']));
+      /* if (is_null($_POST['product-photo']) || $_POST['product-photo'] === "") {
          $media_id = '0';
        } else {
          $media_id = remove_junk($db->escape($_POST['product-photo']));
-       }
+       }*/
        $query   = "UPDATE products SET";
        $query  .=" name ='{$p_name}', quantity ='{$p_qty}',";
        $query  .=" buy_price ='{$p_buy}', sale_price ='{$p_sale}', categorie_id ='{$p_cat}',media_id='{$media_id}',";
@@ -92,15 +93,10 @@ if(!$product){
                        <?php endforeach; ?>
                     </select>
                   </div>
-                  <!--<div class="col-md-6">
-                    <select class="form-control" name="product-photo">
-                      <option value=""> Sin imagen</option>
-                      <?php  foreach ($all_photo as $photo): ?>
-                        <option value="<?php echo (int)$photo['id'];?>" <?php if($product['media_id'] === $photo['id']): echo "selected"; endif; ?> >
-                          <?php echo $photo['file_name'] ?></option>
-                      <?php endforeach; ?>
-                    </select>
-                  </div>-->
+
+                  <input type="hidden" name="product-photo" class="form-control" value="<?php echo remove_junk($product['media_id']); ?>"/>
+
+
                 </div>
               </div>
 <!-- Creamos adaptacion en particular añadir codigo y estado -->
