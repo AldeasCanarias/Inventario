@@ -247,7 +247,7 @@ function tableExists($table){
         $sql  .=" WHERE";
 
         if ($p_name != '') {
-          $sql  .=" p.name LIKE '%$p_name%' OR p.code = '$p_name' OR p.code LIKE '%$p_name%'";
+          $sql  .=" (p.name LIKE '%$p_name%' OR p.code = '$p_name' OR p.code LIKE '%$p_name%') ";
         }
 
         if ($c_name != '') {
@@ -274,6 +274,7 @@ function tableExists($table){
                           END)";
       $result = find_by_sql($sql);
       return $result;
+
     }
 
 
